@@ -25,7 +25,9 @@ public class BIOModel {
 	public void run(int portNumber) throws IOException {
 		ServerSocket serverSocket = new ServerSocket(portNumber);
 		while (true) {
+			System.out.println("阻塞的获取连接");
 			Socket clientSocket = serverSocket.accept();
+			System.out.println("获取连接");
 			new Thread(() -> {
 				try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -33,6 +35,7 @@ public class BIOModel {
 					while ((request = in.readLine()) != null) {
 						response = handle(request);
 						out.println(response);
+						System.out.println("阻塞的读取数据");
 					}
 				} catch (IOException e){
 	                e.printStackTrace();
